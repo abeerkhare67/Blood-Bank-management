@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Queue Front</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        .box {
+            background: white;
+            width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: darkred;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>🩸 Queue Front</h1>
+
+    {% if request %}
+
+        <h2>{{ request.patient_name }}</h2>
+
+        <p>Blood Group: {{ request.blood_group }}</p>
+        <p>Quantity: {{ request.quantity }} units</p>
+        <p>Hospital: {{ request.hospital }}</p>
+        <p>Phone: {{ request.phone }}</p>
+
+        <h3>⬆ This patient is first in the queue</h3>
+
+    {% else %}
+
+        <h2>No patients waiting.</h2>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/queue/">
+        <button>Back to Queue</button>
+    </a>
+
+</div>
+
+</body>
+</html>

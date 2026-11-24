@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+        h1 { color: darkred; text-align: center; }
+        .summary {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        .card {
+            background: white;
+            padding: 20px 35px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th { background: darkred; color: white; }
+        a, button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 8px 4px;
+            background: darkred;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .toolbar { text-align: center; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🩸 Blood Donation History</h1>
+
+    <div class="summary">
+        <div class="card">
+            <h3>Donation Records</h3>
+            <h2>{{ total_donations }}</h2>
+        </div>
+        <div class="card">
+            <h3>Total Units Donated</h3>
+            <h2>{{ total_units }}</h2>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <form method="get">
+            <label for="blood_group">Filter by blood group:</label>
+            <select name="blood_group" id="blood_group">
+                <option value="">All groups</option>
+                {% for group in blood_groups %}
+                <option value="{{ group }}"
+                    {% if selected_group == group %}selected{% endif %}>
+                    {{ group }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+
+        <a href="{% url 'donation_form' %}">+ Record Donation</a>
+        <a href="{% url 'home' %}">Home</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Donor</th>
+                <th>Blood Group</th>
+                <th>Units</th>
+                <th>Date and Time</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for donation in donations %}
+            <tr>
+                <td>{{ donation.donor.name }}</td>
+                <td>{{ donation.blood_group }}</td>
+                <td>{{ donation.units }}</td>
+                <td>{{ donation.donated_at|date:"d M Y, h:i A" }}</td>
+                <td>{{ donation.notes|default:"—" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No donations recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

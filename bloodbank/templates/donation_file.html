@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Blood Donation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 30px;
+        }
+        form {
+            max-width: 450px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+        h1 { color: darkred; text-align: center; }
+        label { display: block; margin-top: 15px; }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+        }
+        button, a {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background: darkred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .messages { color: darkred; }
+    </style>
+</head>
+<body>
+    <h1>🩸 Record a Donation</h1>
+
+    <form method="post" action="{% url 'record_donation' %}">
+        {% csrf_token %}
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <label for="donor">Select Donor</label>
+        <select name="donor" id="donor" required>
+            <option value="">Choose a registered donor</option>
+            {% for donor in donors %}
+            <option value="{{ donor.id }}">
+                {{ donor.name }} — {{ donor.blood_group }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label for="blood_group">Blood Group</label>
+        <select name="blood_group" id="blood_group" required>
+            <option value="">Choose blood group</option>
+            {% for group in blood_groups %}
+            <option value="{{ group }}">{{ group }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="units">Units Donated</label>
+        <input type="number" name="units" id="units"
+               min="1" max="10" value="1" required>
+
+        <button type="submit">Record Donation</button>
+        <a href="{% url 'donation_history' %}">Cancel</a>
+    </form>
+</body>
+</html>

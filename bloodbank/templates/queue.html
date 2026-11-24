@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blood Request Queue</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        h1 {
+            color: darkred;
+        }
+
+        .box {
+            background: white;
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .request {
+            background-color: #ffe5e5;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        .message {
+    padding: 12px;
+    margin: 15px auto;
+    max-width: 600px;
+    background: #ffe0e0;
+    color: #b00000;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+    </style>
+</head>
+
+<body>
+
+    {% if messages %}
+       {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
+       {% endfor %}
+    {% endif %}
+
+    <h1>🩸 Blood Request Queue</h1>
+
+    <div class="box">
+
+        <h2>FIFO Queue</h2>
+
+        <p>
+            <b>First Come → First Served</b>
+        </p>
+
+        {% if requests %}
+
+            {% for request in requests %}
+
+                <div class="request">
+
+                    <h3>{{ request.patient_name }}</h3>
+
+                    <p>
+                        Blood Group: {{ request.blood_group }}
+                    </p>
+
+                    <p>
+                        Quantity: {{ request.quantity }} units
+                    </p>
+
+                    <p>
+                        Hospital: {{ request.hospital }}
+                    </p>
+
+                    <p>
+                        Status: {{ request.status }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <h3>No blood requests in queue.</h3>
+
+        {% endif %}
+
+        <br>
+
+        <a href="/">
+            <button>Back to Home</button>
+        </a>
+
+    </div>
+
+</body>
+</html>
+
+<a href="/dequeue/">
+    <button>Serve First Patient</button>
+</a>
+
+<a href="/peek/">
+    <button>PEEK - First Patient</button>
+</a>

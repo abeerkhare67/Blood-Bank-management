@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Blood Donation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #c62828;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: #c62828;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #a51d1d;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #c62828;
+            text-decoration: none;
+        }
+
+        .messages {
+            color: #333;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Record Blood Donation</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'record_donation' %}">
+            {% csrf_token %}
+
+            <label for="donor">Select Donor</label>
+            <select name="donor" id="donor" required>
+                <option value="">-- Select Donor --</option>
+                {% for donor in donors %}
+                    <option value="{{ donor.pk }}">
+                        {{ donor.name }} - {{ donor.blood_group }}
+                    </option>
+                {% empty %}
+                    <option value="">No donors registered</option>
+                {% endfor %}
+            </select>
+
+            <label for="blood_group">Blood Group</label>
+            <select name="blood_group" id="blood_group" required>
+                <option value="">-- Select Blood Group --</option>
+                {% for group in blood_groups %}
+                    <option value="{{ group }}">{{ group }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="units">Units Donated</label>
+            <input
+                type="number"
+                name="units"
+                id="units"
+                min="1"
+                value="1"
+                required
+            >
+
+            <button type="submit">Record Donation</button>
+        </form>
+
+        <a href="/donations/" class="back">Back to Donations</a>
+    </div>
+</body>
+</html>
+

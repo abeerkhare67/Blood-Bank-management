@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Blood Donation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ddd;
+        }
+        h2 {
+            color: #c62828;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+        select, input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            color: white;
+            background: #c62828;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Record Blood Donation</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'record_donation' %}">
+            {% csrf_token %}
+
+            <label for="donor">Select Donor</label>
+            <select name="donor" id="donor" required>
+                <option value="">-- Select Donor --</option>
+                {% for donor in donors %}
+                    <option value="{{ donor.pk }}">
+                        {{ donor.name }} - {{ donor.blood_group }}
+                    </option>
+                {% empty %}
+                    <option value="">No donors registered</option>
+                {% endfor %}
+            </select>
+
+            <label for="blood_group">Blood Group</label>
+            <select name="blood_group" id="blood_group" required>
+                <option value="">-- Select Blood Group --</option>
+                {% for group in blood_groups %}
+                    <option value="{{ group }}">{{ group }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="units">Units Donated</label>
+            <input type="number" name="units" id="units"
+                   min="1" value="1" required>
+
+            <button type="submit">Record Donation</button>
+        </form>
+
+        <a href="/donations/" class="back">Back to Donations</a>
+    </div>
+</body>
+</html>
+
